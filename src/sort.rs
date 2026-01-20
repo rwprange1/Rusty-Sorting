@@ -42,7 +42,6 @@ pub fn bubble_sort(nums: Vec<i64>) -> Vec<i64>{
         passes += 1;
 
     }
-    println!("{}", passes);
     copy
 }
 
@@ -57,7 +56,7 @@ pub fn insertion_sort(nums: Vec<i64>) -> Vec<i64>{
             copy[temp] = copy[j];
             copy[j] = val;
 
-            if (j == 0) {
+            if  j == 0 {
                 break;
             }else {
                 temp -= 1;
@@ -115,17 +114,52 @@ fn merge(left: Vec<i64>, right: Vec<i64>) -> Vec<i64> {
 }
 
 
+pub fn quick_sort(nums: &mut Vec<i64>, low: usize, high:usize){
+
+    if low < high {
+        let mut rng = rand::rng();
+    
+   
+        let pivot: usize = rng.random_range(low..high);
+        let pi = hoare_partition(nums,  low, high, pivot);
+   
+        quick_sort(nums, low, pi);
+        quick_sort(nums, pi + 1, high);
+
+    }
+
+}
+
+fn hoare_partition(nums:  &mut Vec<i64>, low:  usize, high: usize, pivot: usize) -> usize{
+    let val = nums[pivot];
+    let mut i:i64 = low as i64 - 1;
+    let mut j = high + 1;
+    loop {
+        
+        i += 1;
+        while nums[i as usize] < val {
+            i += 1;
+        }
+
+        j -= 1;
+        while nums[j] > val {
+            j -= 1;
+        }
+
+        if i as usize >= j {
+            return j;
+        }
+        let temp = nums[i as usize];
+        nums[i as usize] = nums[j];
+        nums[j] = temp;
+    }
+    
 
 
-
-fn quick_sort<T>(nums: Vec<T>) -> Vec<T>{
-    Vec::new()
 }
 
 
-fn heap_sort<T>(nums: Vec<T>) -> Vec<T>{
-    Vec::new()
-}
+
 
 pub fn generate_data(size: usize) -> Vec<i64>{
     // Get an RNG:
@@ -139,3 +173,4 @@ pub fn generate_data(size: usize) -> Vec<i64>{
     nums
 
 }
+
