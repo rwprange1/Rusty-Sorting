@@ -56,7 +56,7 @@ pub fn insertion_sort(nums: Vec<i64>) -> Vec<i64>{
             copy[temp] = copy[j];
             copy[j] = val;
 
-            if  j == 0 {
+            if j == 0 {
                 break;
             }else {
                 temp -= 1;

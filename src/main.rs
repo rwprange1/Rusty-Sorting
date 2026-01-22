@@ -1,33 +1,50 @@
 
 
 mod sort;
+mod search;
+
 use std::time::Instant;
+
+use rand::Rng;
+
+use crate::{search::binary_search, sort::quick_sort};
 
 
 fn main() {
-    for i in 6..=10{
-        let num_elements = (10 as i128).pow(i);
-        println!("Testing run times for  {} elements", num_elements);
-        let nums = sort::generate_data(num_elements as usize);
-    
-
-        let merge = test_merge(nums.clone());
-        let quick = test_quick(nums.clone());    
-
-        let selection = test_selection(nums.clone());
-        let bubble = test_bubble(nums.clone());
-        let insertion = test_insertion(nums.clone());
-        
-        assert_eq!(selection, bubble);
-        assert_eq!(selection, insertion);
-        assert_eq!(insertion, merge);
-        assert_eq!(merge, quick);
-
-        println!("Test Case Done\n\n");
-    
+    loop {
+        test_binary(10);
     }
-    
 }
+
+fn test_binary(len: usize){
+
+    let mut nums = sort::generate_data(len);
+    let mut rng = rand::rng();
+
+    quick_sort(&mut nums, 0, len-1);
+    let num = rng.random_range(0..=(10*len));
+    let mut data = num as i64;
+    if num < nums.len(){
+        data = nums[num];
+    }
+
+
+    println!("{:?} and looking for {}", nums, data);
+    match binary_search(&nums, data) {
+        Some(n) => {
+            if nums[n] != data {
+                println!("{} != {}\nData: {:?}", nums[n], data, nums);
+            }
+        },
+        None => {
+            println!("{} was not in {:?}", data, nums);
+        }
+    }
+
+
+
+}
+
 
 
 fn test_merge(nums: Vec<i64>) -> Vec<i64>{
